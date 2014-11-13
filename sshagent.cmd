@@ -16,7 +16,7 @@ echo Looking for existing ssh-agent...
 FOR /F "tokens=1-2" %%A IN ('tasklist^|find /i "ssh-agent.exe"') DO @(IF %%A==ssh-agent.exe (call :agentexists %%B))
 echo Finished looking...
 IF NOT DEFINED SSH_AGENT_PID (call :startagent)
-GOTO :eof
+GOTO :setregistry
 
 :doAdds
  FOR /R %USERPROFILE%\.ssh\ %%A in (*_rsa.) DO %SSH_BIN_PATH%\ssh-add %%A
@@ -29,7 +29,7 @@ GOTO :eof
 :agentexists
  ECHO Agent exists as process %1
  SET SSH_AGENT_PID=%1
- GOTO :eof
+ GOTO :setregistry
 
 :startagent
  ECHO Starting agent
@@ -38,7 +38,7 @@ GOTO :eof
  rem -- I can't seem to figure out how to prevent that.  
  GOTO :checkAgent
 
-:eof
+:setregistry
  rem -- store these in the registry. We still need to actually search for the process and
  rem -- such at startup, in case the process has died, we rebooted, or what not, but this
  rem -- should allow non-CMD command parsers such as bash, Take Command, PowerShell, etc
@@ -46,3 +46,5 @@ GOTO :eof
  rem -- Note that SetX does not affect any already open command shells.
  SetX SSH_AUTH_SOCK %SSH_AUTH_SOCK%
  SetX SSH_AGENT_PID %SSH_AGENT_PID%
+
+:eof

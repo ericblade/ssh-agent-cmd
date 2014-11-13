@@ -7,9 +7,12 @@ Me too.  So, here's a script that will launch ssh-agent, or connect to an existi
 There's also a registry entry key that you can import, that will cause it to run the script automatically
 in every command processor you open.
 
-**** WARNING ****
+**** WARNINGS ****
 
 YOU MUST EDIT THESE FILES AND PLACE THE CORRECT LOCATIONS TO YOUR FILES, OTHERWISE BAD THINGS MAY HAPPEN.
+
+This script does not currently work in the Take Command command processor (TCC). I don't know why, it
+is supposed to be 100% compatible with CMD.exe scripts, but for some reason this just infinite loops.
 
 **** Installation ****
 
