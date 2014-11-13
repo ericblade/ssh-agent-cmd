@@ -23,12 +23,11 @@ start a command window again without undoing it)
 
 **** Caveats ****
 
-For some reason, unlike when running under Unix, it seems that you have to enter the password for
-each new command session.  Maybe I'm doing something wrong, or maybe it's just something weird about
-Windows.  But you do get a single ssh-agent process running, and after you type in your password once,
-you're all set.
+Sometimes while I was working on this, I saw a second ssh-agent pop up.  Not sure why.
 
-If someone knows how to fix that, please submit a pull request!
+Also, it looks like Windows keeps a lock on the socket after ssh-agent terminates, so if the process
+gets killed somehow, you may need to edit the file and change the socket path, or reboot. It's really
+weird.
 
 **** License ****
 

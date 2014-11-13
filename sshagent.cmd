@@ -29,7 +29,7 @@ GOTO :eof
 :agentexists
  ECHO Agent exists as process %1
  SET SSH_AGENT_PID=%1
- GOTO :doAdds
+ GOTO :eof
 
 :startagent
  ECHO Starting agent
