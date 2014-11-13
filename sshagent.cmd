@@ -39,3 +39,10 @@ GOTO :eof
  GOTO :checkAgent
 
 :eof
+ rem -- store these in the registry. We still need to actually search for the process and
+ rem -- such at startup, in case the process has died, we rebooted, or what not, but this
+ rem -- should allow non-CMD command parsers such as bash, Take Command, PowerShell, etc
+ rem -- or if you're not using the autorun registry change, to pick up the environment.
+ rem -- Note that SetX does not affect any already open command shells.
+ SetX SSH_AUTH_SOCK %SSH_AUTH_SOCK%
+ SetX SSH_AGENT_PID %SSH_AGENT_PID%
