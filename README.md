@@ -21,6 +21,11 @@ Then double-click the autorun.reg file. (Make sure you use double slashes in thi
 If you screw up this file, I don't know what will happen. Maybe nothing, maybe you won't be able to
 start a command window again without undoing it)
 
+If you have git 1.7.0 for windows or better, and you are constantly nagged by github to enter
+credentials for https accesses, you might try:
+
+git config --global credential.helper wincred
+
 **** Caveats ****
 
 Sometimes while I was working on this, I saw a second ssh-agent pop up.  Not sure why.
