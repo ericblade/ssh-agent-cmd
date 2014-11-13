@@ -8,13 +8,18 @@ There's also a registry entry key that you can import, that will cause it to run
 in every command processor you open.
 
 **** WARNING ****
+
 YOU MUST EDIT THESE FILES AND PLACE THE CORRECT LOCATIONS TO YOUR FILES, OTHERWISE BAD THINGS MAY HAPPEN.
+
+**** Installation ****
 
 Place sshagent.cmd somewhere within your system.  Edit it to change the SSH_BIN_PATH variable.
 
 If you want to use the registry entry, edit the autorun.reg file, and change the path listed in
-"AutoRun"="d:\\sshagent.cmd" to point to the location where your sshagent.cmd you will be using is.
-Then double-click the autorun.reg file.
+"AutoRun"="d:\\\\sshagent.cmd" to point to the location where your sshagent.cmd you will be using is.
+Then double-click the autorun.reg file. (Make sure you use double slashes in this file! 
+If you screw up this file, I don't know what will happen. Maybe nothing, maybe you won't be able to
+start a command window again without undoing it)
 
 **** Caveats ****
 
