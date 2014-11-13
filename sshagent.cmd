@@ -5,7 +5,7 @@ IF DEFINED SSH_AGENT_SEARCHING (GOTO :eof)
 set SSH_AGENT_SEARCHING=1
 
 rem -- *** SET THIS PATH TO THE LOCATION WHERE YOUR SSH BINARIES ARE
-set GIT_PATH="c:\program files (x86)\git\bin\"
+set SSH_BIN_PATH="c:\program files (x86)\git\bin\"
 rem -- NOTE: If you kill an agent, the socket file remains locked by Windows! Bad!
 rem -- This means you'll need to change the below filename if you want to run the
 rem -- script again without rebooting.
@@ -19,7 +19,7 @@ IF NOT DEFINED SSH_AGENT_PID (call :startagent)
 GOTO :eof
 
 :doAdds
- FOR /R %USERPROFILE%\.ssh\ %%A in (*_rsa.) DO %GIT_PATH%\ssh-add %%A
+ FOR /R %USERPROFILE%\.ssh\ %%A in (*_rsa.) DO %SSH_BIN_PATH%\ssh-add %%A
  GOTO :eof
 
 :wtf
@@ -33,7 +33,7 @@ GOTO :eof
 
 :startagent
  ECHO Starting agent
- %GIT_PATH%\ssh-agent -a %SSH_AUTH_SOCK%
+ %SSH_BIN_PATH%\ssh-agent -a %SSH_AUTH_SOCK%
  rem -- Yes, I know this could cause an infinite loop if it can't find one and can't start one.
  rem -- I can't seem to figure out how to prevent that.  
  GOTO :checkAgent
