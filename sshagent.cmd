@@ -13,14 +13,17 @@ set SSH_AUTH_SOCK=%TEMP%\ssh-agent-socket.tmp
 
 :checkAgent
 echo Looking for existing ssh-agent...
-FOR /F "tokens=1-2" %%A IN ('tasklist^|find /i "ssh-agent.exe"') DO @(IF %%A==ssh-agent.exe (call :agentexists %%B))
+SET "SSH_AGENT_PID="
+rem -- Call cmd /c to find it, because Take Command's "tasklist" is NOT format compatible with CMD.exe!!
+FOR /F "tokens=1-2" %%A IN ('cmd /c tasklist^|find /i "ssh-agent.exe"') DO @(IF %%A==ssh-agent.exe (call :agentexists %%B))
 echo Finished looking...
-IF NOT DEFINED SSH_AGENT_PID (call :startagent)
-GOTO :setregistry
+IF NOT DEFINED SSH_AGENT_PID (GOTO :startagent)
+CALL :setregistry
+GOTO :eof
 
 :doAdds
  FOR /R %USERPROFILE%\.ssh\ %%A in (*_rsa.) DO %SSH_BIN_PATH%\ssh-add %%A
- GOTO :eof
+ EXIT /b
 
 :wtf
  @echo "WTF"
@@ -29,7 +32,7 @@ GOTO :setregistry
 :agentexists
  ECHO Agent exists as process %1
  SET SSH_AGENT_PID=%1
- GOTO :setregistry
+ EXIT /b
 
 :startagent
  ECHO Starting agent
@@ -37,6 +40,7 @@ GOTO :setregistry
  attrib -s %SSH_AUTH_SOCK%
  del /f /q %SSH_AUTH_SOCK%
  %SSH_BIN_PATH%\ssh-agent -a %SSH_AUTH_SOCK%
+ CALL :doAdds
  rem -- Yes, I know this could cause an infinite loop if it can't find one and can't start one.
  rem -- I can't seem to figure out how to prevent that.  
  GOTO :checkAgent
@@ -49,5 +53,6 @@ GOTO :setregistry
  rem -- Note that SetX does not affect any already open command shells.
  SetX SSH_AUTH_SOCK %SSH_AUTH_SOCK%
  SetX SSH_AGENT_PID %SSH_AGENT_PID%
+ EXIT /b
 
 :eof
