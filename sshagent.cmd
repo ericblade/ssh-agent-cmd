@@ -9,7 +9,7 @@ set SSH_BIN_PATH="c:\program files (x86)\git\bin\"
 rem -- NOTE: If you kill an agent, the socket file remains locked by Windows! Bad!
 rem -- This means you'll need to change the below filename if you want to run the
 rem -- script again without rebooting.
-set SSH_AUTH_SOCK=%TEMP%\ssh-agent-socket.temp
+set SSH_AUTH_SOCK=%TEMP%\ssh-agent-socket.tmp
 
 :checkAgent
 echo Looking for existing ssh-agent...
@@ -33,6 +33,9 @@ GOTO :setregistry
 
 :startagent
  ECHO Starting agent
+ rem -- win 8.1 at least has these set as system, so you can't delete them
+ attrib -s %SSH_AUTH_SOCK%
+ del /f /q %SSH_AUTH_SOCK%
  %SSH_BIN_PATH%\ssh-agent -a %SSH_AUTH_SOCK%
  rem -- Yes, I know this could cause an infinite loop if it can't find one and can't start one.
  rem -- I can't seem to figure out how to prevent that.  
