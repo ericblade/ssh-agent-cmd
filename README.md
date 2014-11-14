@@ -11,9 +11,6 @@ in every command processor you open.
 
 YOU MUST EDIT THESE FILES AND PLACE THE CORRECT LOCATIONS TO YOUR FILES, OTHERWISE BAD THINGS MAY HAPPEN.
 
-This script does not currently work in the Take Command command processor (TCC). I don't know why, it
-is supposed to be 100% compatible with CMD.exe scripts, but for some reason this just infinite loops.
-
 **** Installation ****
 
 Place sshagent.cmd somewhere within your system.  Edit it to change the SSH_BIN_PATH variable.
@@ -31,11 +28,7 @@ git config --global credential.helper wincred
 
 **** Caveats ****
 
-Sometimes while I was working on this, I saw a second ssh-agent pop up.  Not sure why.
-
-Also, it looks like Windows keeps a lock on the socket after ssh-agent terminates, so if the process
-gets killed somehow, you may need to edit the file and change the socket path, or reboot. It's really
-weird.
+Nothing that I know of!
 
 **** License ****
 
