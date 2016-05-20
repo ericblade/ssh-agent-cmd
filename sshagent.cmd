@@ -19,6 +19,7 @@ FOR /F "tokens=1-2" %%A IN ('cmd /c tasklist^|find /i "ssh-agent.exe"') DO @(IF 
 echo Finished looking...
 IF NOT DEFINED SSH_AGENT_PID (GOTO :startagent)
 CALL :setregistry
+set SSH_AGENT_SEARCHING=
 GOTO :eof
 
 :doAdds
@@ -27,6 +28,7 @@ GOTO :eof
 
 :wtf
  @echo "WTF"
+ set SSH_AGENT_SEARCHING=
  GOTO :eof
 
 :agentexists
