@@ -39,11 +39,6 @@ GOTO :eof
  FOR /R %USERPROFILE%\.ssh\ %%A in (*_rsa.) DO %SSH_BIN_PATH%\ssh-add %%A >nul 2>&1
  EXIT /b
 
-:wtf
- @echo "WTF"
- set SSH_AGENT_SEARCHING=
- GOTO :eof
-
 :agentexists
  SET SSH_AGENT_PID=%1
  EXIT /b
