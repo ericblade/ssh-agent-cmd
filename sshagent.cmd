@@ -32,6 +32,7 @@ rem -- Call cmd /c to find it, because Take Command's "tasklist" is NOT format c
 FOR /F "tokens=1-2" %%A IN ('cmd /c tasklist^|find /i "ssh-agent.exe"') DO @(IF %%A==ssh-agent.exe (call :agentexists %%B))
 IF NOT DEFINED SSH_AGENT_PID (GOTO :startagent)
 CALL :setregistry
+set SSH_AGENT_SEARCHING=
 GOTO :eof
 
 :doAdds
@@ -40,6 +41,7 @@ GOTO :eof
 
 :wtf
  @echo "WTF"
+ set SSH_AGENT_SEARCHING=
  GOTO :eof
 
 :agentexists
