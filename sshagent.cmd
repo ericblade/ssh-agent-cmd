@@ -5,7 +5,22 @@ IF DEFINED SSH_AGENT_SEARCHING (GOTO :eof)
 set SSH_AGENT_SEARCHING=1
 
 rem -- *** SET THIS PATH TO THE LOCATION WHERE YOUR SSH BINARIES ARE
-set SSH_BIN_PATH="c:\program files (x86)\git\usr\bin\"
+if not defined SSH_BIN_PATH (
+    echo Searching for SSH bin path... Define SSH_BIN_PATH to override.
+
+    if exist "c:\program files\git\usr\bin\" (
+        set SSH_BIN_PATH="c:\program files\git\usr\bin\"
+    ) else if exist "c:\program files (x86)\git\usr\bin\" (
+        set SSH_BIN_PATH="c:\program files (x86)\git\usr\bin\"
+    )
+
+    if defined SSH_BIN_PATH (
+        setlocal enabledelayedexpansion
+        echo Found !SSH_BIN_PATH!...
+        endlocal
+    )
+)
+
 rem -- NOTE: If you kill an agent, the socket file remains locked by Windows! Bad!
 rem -- This means you'll need to change the below filename if you want to run the
 rem -- script again without rebooting.
