@@ -12,17 +12,15 @@ rem -- script again without rebooting.
 set SSH_AUTH_SOCK=%TEMP%\ssh-agent-socket.tmp
 
 :checkAgent
-echo Looking for existing ssh-agent...
 SET "SSH_AGENT_PID="
 rem -- Call cmd /c to find it, because Take Command's "tasklist" is NOT format compatible with CMD.exe!!
 FOR /F "tokens=1-2" %%A IN ('cmd /c tasklist^|find /i "ssh-agent.exe"') DO @(IF %%A==ssh-agent.exe (call :agentexists %%B))
-echo Finished looking...
 IF NOT DEFINED SSH_AGENT_PID (GOTO :startagent)
 CALL :setregistry
 GOTO :eof
 
 :doAdds
- FOR /R %USERPROFILE%\.ssh\ %%A in (*_rsa.) DO %SSH_BIN_PATH%\ssh-add %%A
+ FOR /R %USERPROFILE%\.ssh\ %%A in (*_rsa.) DO %SSH_BIN_PATH%\ssh-add %%A >nul 2>&1
  EXIT /b
 
 :wtf
@@ -30,19 +28,17 @@ GOTO :eof
  GOTO :eof
 
 :agentexists
- ECHO Agent exists as process %1
  SET SSH_AGENT_PID=%1
  EXIT /b
 
 :startagent
- ECHO Starting agent
  rem -- win 8.1 at least has these set as system, so you can't delete them
- attrib -s %SSH_AUTH_SOCK%
- del /f /q %SSH_AUTH_SOCK%
- %SSH_BIN_PATH%\ssh-agent -a %SSH_AUTH_SOCK%
+ attrib -s %SSH_AUTH_SOCK% >nul 2>&1
+ del /f /q %SSH_AUTH_SOCK% >nul 2>&1
+ %SSH_BIN_PATH%\ssh-agent -a %SSH_AUTH_SOCK% >nul 2>&1
  CALL :doAdds
  rem -- Yes, I know this could cause an infinite loop if it can't find one and can't start one.
- rem -- I can't seem to figure out how to prevent that.  
+ rem -- I can't seem to figure out how to prevent that.
  GOTO :checkAgent
 
 :setregistry
@@ -51,8 +47,8 @@ GOTO :eof
  rem -- should allow non-CMD command parsers such as bash, Take Command, PowerShell, etc
  rem -- or if you're not using the autorun registry change, to pick up the environment.
  rem -- Note that SetX does not affect any already open command shells.
- SetX SSH_AUTH_SOCK %SSH_AUTH_SOCK%
- SetX SSH_AGENT_PID %SSH_AGENT_PID%
+ SetX SSH_AUTH_SOCK %SSH_AUTH_SOCK% >nul 2>&1
+ SetX SSH_AGENT_PID %SSH_AGENT_PID% >nul 2>&1
  EXIT /b
 
 :eof
