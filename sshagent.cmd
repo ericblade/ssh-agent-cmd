@@ -5,7 +5,7 @@ rem -- This prevents us from infinite looping at startup.
 rem -- Surprise! "FOR" runs a new command processor for every loop! Wow!
 rem -- So, this is put at the top to short circuit any additional executions that might happen
 rem -- as a side effect of other commands inside.
-IF DEFINED SSH_AGENT_SEARCHING (GOTO :eof)
+IF DEFINED SSH_AGENT_SEARCHING GOTO :end
 set SSH_AGENT_SEARCHING=1
 
 rem -- *** SET SSH_BIN_PATH TO THE LOCATION WHERE YOUR SSH BINARIES ARE IF NOT INSTALLED WITH GIT IN
@@ -28,7 +28,7 @@ if not defined SSH_BIN_PATH (
 
 IF NOT EXIST %SSH_BIN_PATH%\ssh-agent.exe (
     echo "*** Unable to find ssh-agent.exe in %ProgramFiles%\git\usr\bin or %ProgramFiles(x86)%\git\usr\bin or %SSH_BIN_PATH%\. Check SSH_BIN_PATH."
-    exit /b
+    GOTO :exit
 )
 
 rem -- NOTE: If you kill an agent, the socket file remains locked by Windows! Bad!
@@ -48,7 +48,7 @@ FOR /F "tokens=1-2" %%A IN ('cmd /c tasklist^|find /i "ssh-agent.exe"') DO @(IF 
 rem -- If no SSH_AGENT_PID found, then start a new instance of ssh-agent.exe
 IF NOT DEFINED SSH_AGENT_PID (GOTO :startagent)
 CALL :setregistry
-GOTO :eof
+GOTO :end
 
 :doAdds
  rem -- Grab all the *_rsa.* files in %USERPROFILE% and add them to the agent, this will probably
@@ -80,6 +80,7 @@ GOTO :eof
  SetX SSH_AUTH_SOCK %SSH_AUTH_SOCK% >nul 2>&1
  SetX SSH_AGENT_PID %SSH_AGENT_PID% >nul 2>&1
  set SSH_AGENT_SEARCHING=
- EXIT /b
+ GOTO :end
 
-:eof
+:end
+IF /I "%1"=="-x" (EXIT)

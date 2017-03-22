@@ -4,7 +4,6 @@ You hate entering your password over and over and over when you're using git in 
 Command Processor, right?
 
 Me too.  So, here's a script that will launch ssh-agent, or connect to an existing one.
-
 There's also a registry entry key that you can import, that will cause it to run the script automatically
 in every command processor you open.
 
@@ -34,25 +33,12 @@ git config --global credential.helper wincred
 
 **** Caveats ****
 
-This will add the following environment variables to your global registry:
-SSH_AGENT_PID (contianing the process id of the ssh-agent.exe instance)
-SSH_AUTH_SOCK (containing the path to the socket file used by ssh-agent)
-
-If you do not already have an environment variable called SSH_BIN_PATH, then that will be added
-for the specific shell that runs this script.
-
-If you use a multi-shell app such as ConsoleZ or Console2 or some such, and you run this script initially
-inside a shell started from that app, then use the "New Tab", the new tab will inherit the old environment,
-as it is actually launched by the app, which still has the old environment.  Open a new window.
+Nothing that I know of!
 
 **** License ****
 
 This is free.  Plain-old free, public domain. As open as it gets.  Do whatever you want with it.
 It'd be super nice, though, if you were to make any changes that someone else would find useful, if you
 contributed those as a pull request.  Open source works best when everyone helps!
-
-Please feel free to discuss this script at http://www.ericblade.us/phpBB3/viewtopic.php?f=6&t=27
-
-Report problems and send pull requests at http://github.com/ericblade/ssh-agent-cmd
 
 And don't forget: Today, you should BE AWESOME.
